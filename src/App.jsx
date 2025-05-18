@@ -1,26 +1,34 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+
 import { TaskList } from "./Components/TaskList";
 import { AddTaskForm } from "./Components/AddTaskForm";
 
 import "./App.css";
-
+const BASE_URL = "http://localhost:4500";
 function App() {
-  const [tasks, setTasks] = useState(() => {
-    const storedTasks = localStorage.getItem("tasks");
-    return storedTasks ? JSON.parse(storedTasks) : [];
-  });
+  const [tasks, setTasks] = useState([]);
+
+  const fetchTodos = async () => {
+    const res = await fetch(`${BASE_URL}/todos`);
+    const data = await res.json();
+    setTasks(data);
+  };
 
   useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
+    fetchTodos();
+  }, []);
 
-  function onToggleComplete(id) {
+  const onToggleComplete = useCallback((id) => {
+    // Update UI immediately
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
         task.id === id ? { ...task, status: !task.status } : task
       )
     );
-  }
+
+    // Fire and forget backend call (optionally handle errors)
+    fetch(`${BASE_URL}/todos/${id}`, { method: "PUT" }).catch(console.error);
+  }, []);
 
   // const onDelete = (id) => {
   //   setTasks((prevTasks) => {
@@ -29,15 +37,21 @@ function App() {
   //     });
   //   });
   // };
-  const onDelete = (id) =>
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+  const onDelete = useCallback(async (id) => {
+    await fetch(`${BASE_URL}/todos/${id}`, {
+      method: "DELETE",
+    });
 
-  const handleAddTask = (input) => {
-    const newTask = {
-      id: Date.now(),
-      desc: input,
-      status: false,
-    };
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+  }, []);
+
+  const handleAddTask = async (input) => {
+    const res = await fetch(`${BASE_URL}/todos`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: input }),
+    });
+    const newTask = await res.json();
 
     //setTasks([...tasks, newTask]); // works fine but not the best practice
     setTasks((prevTasks) => [...prevTasks, newTask]);

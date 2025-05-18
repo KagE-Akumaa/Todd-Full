@@ -1,10 +1,13 @@
 import { error } from "console";
+import cors from "cors";
 import express from "express";
 import fs from "fs";
 import { json } from "stream/consumers";
 const app = express();
 
 const PORT = 4500;
+
+app.use(cors());
 
 app.use(express.json());
 
@@ -79,7 +82,7 @@ app.put("/todos/:id", (req, res) => {
     let found = false;
     todos = todos
       // rempve any null or bad entry
-      .filter((todo) => todo && typeof todo.id === NUmber)
+      .filter((todo) => todo && typeof todo.id === "number")
       .map((todo) => {
         if (todo.id === id) {
           todo.status = !todo.status;

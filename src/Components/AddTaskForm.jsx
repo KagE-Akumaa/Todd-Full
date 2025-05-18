@@ -10,7 +10,13 @@ export const AddTaskForm = ({ handleAddTask }) => {
     setInput("");
   };
   return (
-    <form onSubmit={onSubmit} className="flex w-full max-w-md mb-6">
+    <form
+      onSubmit={onSubmit}
+      id="task-input"
+      name="task"
+      type="text"
+      className="flex w-full max-w-md mb-6"
+    >
       <input
         type="text"
         value={input}
