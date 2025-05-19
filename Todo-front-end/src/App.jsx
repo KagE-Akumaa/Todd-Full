@@ -45,11 +45,12 @@ function App() {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
   }, []);
 
-  const handleAddTask = async (input) => {
+  // Function called on Add Task
+  const handleAddTask = async (input, priority, dueDate) => {
     const res = await fetch(`${BASE_URL}/todos`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title: input }),
+      body: JSON.stringify({ title: input, priority, dueDate }),
     });
     const newTask = await res.json();
 
@@ -58,8 +59,8 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col items-center p-6">
-      <h1 className="text-4xl font-bold text-cyan-400 mb-6">My Todo List</h1>
+    <div className="min-h-screen bg-purple-500 flex flex-col items-center p-6">
+      <h1 className="text-4xl font-bold text-purple-800 mb-6">My Todo List</h1>
       <AddTaskForm handleAddTask={handleAddTask}></AddTaskForm>
       <TaskList
         tasks={tasks}

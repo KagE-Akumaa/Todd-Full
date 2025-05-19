@@ -1,8 +1,8 @@
-import { error } from "console";
+
 import cors from "cors";
 import express from "express";
 import fs from "fs";
-import { json } from "stream/consumers";
+
 const app = express();
 
 const PORT = 4500;
@@ -22,8 +22,8 @@ app.get("/todos", (req, res) => {
 });
 
 app.post("/todos", (req, res) => {
-  const { title } = req.body;
-  if (!title) {
+  const { title, priority, dueDate } = req.body;
+  if (!title || !priority || !dueDate) {
     return res.status(400).json({ error: "Title is required" });
   }
   fs.readFile("./todos.json", "utf8", (err, data) => {
@@ -35,6 +35,8 @@ app.post("/todos", (req, res) => {
     const newTodo = {
       id: Date.now(),
       title,
+      priority,
+      dueDate,
       status: false,
     };
     todos.push(newTodo);

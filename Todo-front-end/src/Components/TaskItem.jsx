@@ -1,7 +1,13 @@
 export const TaskItem = ({ task, onToggleComplete, onDelete }) => {
+  const { title, priority, dueDate } = task;
+  const setColor = (priority) => {
+    if (priority === "low") return "text-green-400";
+    else if (priority === "medium") return "text-yellow-400";
+    else return "text-red-400";
+  };
   return (
     <>
-      <div className="flex items-center bg-gray-800 p-4 rounded-md mb-3 shadow-md w-[500px]">
+      <div className="flex flex-col sm:flex-row sm:items-center bg-gray-500 p-4 rounded-md mb-3 shadow-md w-full max-w-[700px] hover:bg-gray-700">
         {/* CheckBox */}
         <input
           type="checkbox"
@@ -13,11 +19,18 @@ export const TaskItem = ({ task, onToggleComplete, onDelete }) => {
         />
         {/* Task Description */}
         <span
-          className={`flex-1 ml-4 text-white text-lg ${
+          className={`flex-1 ml-0 sm:ml-4 mt-2 sm:mt-0 text-white text-lg break-words whitespace-normal ${
             task.status ? "line-through text-gray-400" : ""
           }`}
         >
-          {task.title}
+          {title}
+        </span>
+        {/*Display priority here */}
+        <span className={`text-sm ${setColor(priority)} m-3 p-2`}>
+          {priority.toUpperCase()}
+        </span>
+        <span className="text-sm text-blue-300 mr-4">
+          {new Date(dueDate).toLocaleDateString()}
         </span>
         {/* Delete Button */}
         <button
@@ -25,7 +38,7 @@ export const TaskItem = ({ task, onToggleComplete, onDelete }) => {
           onClick={() => {
             onDelete(task.id);
           }}
-          className="bg-red-500 m-3 w-[130px] h-[50px] rounded-lg text-white  border-2 border-red-500 hover:bg-red-700 cursor-pointer"
+          className="text-white m-4 p-2 border border-purple-600 rounded-2xl focus:ring-2 focus:ring-purple-400 cursor-pointer bg-red-500 hover:bg-red-700"
         >
           Delete
         </button>
