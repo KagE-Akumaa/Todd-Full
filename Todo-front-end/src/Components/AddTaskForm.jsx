@@ -14,11 +14,11 @@ export const AddTaskForm = ({ handleAddTask }) => {
       onSubmit={onSubmit}
       id="task-input"
       name="task"
-      type="text"
       className="flex w-full max-w-md mb-6"
     >
       <input
         type="text"
+        required
         value={input}
         placeholder="Enter the task"
         className="flex-grow p-3 border m-4 border-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-400 text-white"
