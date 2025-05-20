@@ -1,9 +1,15 @@
 import { TaskItem } from "./TaskItem";
 
-export const TaskList = ({ tasks, onToggleComplete, onDelete }) => {
+export const TaskList = ({
+  tasks,
+  onToggleComplete,
+  onDelete,
+  setShowModal,
+  setTaskToEdit,
+}) => {
   {
     return (
-      <div>
+      <div className="max-h-[80vh] overflow-y-auto pr-2">
         {tasks.map((task) => {
           return (
             <TaskItem
@@ -11,6 +17,8 @@ export const TaskList = ({ tasks, onToggleComplete, onDelete }) => {
               task={task}
               onToggleComplete={onToggleComplete}
               onDelete={onDelete}
+              setShowModal={setShowModal}
+              setTaskToEdit={setTaskToEdit}
             ></TaskItem>
           );
         })}

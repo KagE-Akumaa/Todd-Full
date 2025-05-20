@@ -1,9 +1,21 @@
-export const TaskItem = ({ task, onToggleComplete, onDelete }) => {
+export const TaskItem = ({
+  task,
+  onToggleComplete,
+  onDelete,
+  setShowModal,
+  setTaskToEdit,
+}) => {
   const { title, priority, dueDate } = task;
   const setColor = (priority) => {
     if (priority === "low") return "text-green-400";
     else if (priority === "medium") return "text-yellow-400";
     else return "text-red-400";
+  };
+
+
+  const onEdit = (task)=>{
+    setShowModal(true);
+    setTaskToEdit(task);
   };
   return (
     <>
@@ -20,7 +32,7 @@ export const TaskItem = ({ task, onToggleComplete, onDelete }) => {
         {/* Task Description */}
         <span
           className={`flex-1 ml-0 sm:ml-4 mt-2 sm:mt-0 text-white text-lg break-words whitespace-normal ${
-            task.status ? "line-through text-gray-400" : ""
+            task.status ? "line-through" : ""
           }`}
         >
           {title}
@@ -32,6 +44,15 @@ export const TaskItem = ({ task, onToggleComplete, onDelete }) => {
         <span className="text-sm text-blue-300 mr-4">
           {new Date(dueDate).toLocaleDateString()}
         </span>
+        <button
+          type="button"
+          onClick={() => {
+            onEdit(task);
+          }}
+          className="bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded-lg ml-2"
+        >
+          Edit
+        </button>
         {/* Delete Button */}
         <button
           type="button"
