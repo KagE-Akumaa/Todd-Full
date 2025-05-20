@@ -20,6 +20,7 @@ export const AddTaskForm = ({ handleAddTask }) => {
       name="task"
       className="flex w-[700px] mb-6"
     >
+      
       <input
         type="text"
         required

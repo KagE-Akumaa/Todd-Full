@@ -98,7 +98,7 @@ function App() {
         ></TaskList>
       </div>
       {showModal && taskToEdit && (
-        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-sm bg-black/40 z-10">
+        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-sm bg-black/40 z-10 transition-opacity duration-300 opacity-100">
           <EditModal
             task={taskToEdit}
             onClose={() => setShowModal(false)}

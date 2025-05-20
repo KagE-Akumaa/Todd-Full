@@ -12,8 +12,7 @@ export const TaskItem = ({
     else return "text-red-400";
   };
 
-
-  const onEdit = (task)=>{
+  const onEdit = (task) => {
     setShowModal(true);
     setTaskToEdit(task);
   };
@@ -30,6 +29,7 @@ export const TaskItem = ({
           onChange={() => onToggleComplete(task.id)}
         />
         {/* Task Description */}
+      
         <span
           className={`flex-1 ml-0 sm:ml-4 mt-2 sm:mt-0 text-white text-lg break-words whitespace-normal ${
             task.status ? "line-through" : ""
