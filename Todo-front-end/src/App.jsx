@@ -1,9 +1,9 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 
 import { TaskList } from "./Components/TaskList";
 import { AddTaskForm } from "./Components/AddTaskForm";
 import { EditModal } from "./Components/EditModal";
-
+import { Filtering } from "./Components/Filtering";
 import "./App.css";
 
 const BASE_URL = "http://localhost:4500";
@@ -84,13 +84,53 @@ function App() {
     }
   };
 
+  const [filters, setFilters] = useState({
+    time: "all",
+    priority: "all",
+    status: "",
+  });
+  const onFilterChange = (newFilters) => {
+    setFilters(newFilters);
+  };
+
+  const FilteredTasks = useMemo(() => {
+    return tasks.filter((task) => {
+      // Time filter
+      if (filters.time === "today") {
+        const today = new Date().toISOString().split("T")[0];
+        if (!task.dueDate || !task.dueDate.startsWith(today)) return false;
+      } else if (filters.time === "week") {
+        const now = new Date();
+        const endOfWeek = new Date();
+        endOfWeek.setDate(now.getDate() + 7);
+        const dueDate = new Date(task.dueDate);
+        if (isNaN(dueDate) || dueDate < now || dueDate > endOfWeek)
+          return false;
+      }
+
+      // Priority filter
+      if (filters.priority !== "all" && task.priority !== filters.priority) {
+        return false;
+      }
+
+      // Status filter
+      if (filters.status !== "") {
+        const statusBool = filters.status === "true"; // convert string to boolean
+        if (task.status !== statusBool) return false;
+      }
+
+      return true;
+    });
+  }, [tasks, filters]);
+
   return (
-    <div className="min-h-screen bg-purple-500 flex flex-col items-center p-6">
+    <div className="min-h-screen bg-purple-300 flex flex-col items-center p-6">
       <h1 className="text-4xl font-bold text-purple-800 mb-6">My Todo List</h1>
       <div className={showModal ? "blur-sm pointer-events-none" : ""}>
         <AddTaskForm handleAddTask={handleAddTask}></AddTaskForm>
+        <Filtering onFilterChange={onFilterChange}></Filtering>
         <TaskList
-          tasks={tasks}
+          tasks={FilteredTasks}
           onToggleComplete={onToggleComplete}
           onDelete={onDelete}
           setShowModal={setShowModal}
