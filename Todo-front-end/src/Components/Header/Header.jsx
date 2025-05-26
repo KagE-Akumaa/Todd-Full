@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Header() {
   return (
-    <header className="shadow-2xl">
+    <header className="fixed w-full shadow-2xl">
       <nav className="bg-gray-300 border-b border-gray-500">
         <div className="max-w-screen-xl mx-auto px-6 py-4 flex flex-wrap justify-between items-center">
           {/* Logo + App Name */}
