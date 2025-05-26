@@ -93,6 +93,8 @@ function App() {
     setFilters(newFilters);
   };
 
+  // used memo so that it won't recalculate for every re-render
+
   const FilteredTasks = useMemo(() => {
     return tasks.filter((task) => {
       // Time filter
