@@ -1,4 +1,5 @@
 import React from "react";
+import Welcome from "./Welcome";
 
 function Home() {
   return (
@@ -18,6 +19,7 @@ function Home() {
       <p className="mt-6 text-sm text-gray-500">
         Start by navigating to the Todo page to add your tasks.
       </p>
+      <Welcome></Welcome>
     </div>
   );
 }

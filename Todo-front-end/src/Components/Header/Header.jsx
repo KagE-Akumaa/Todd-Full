@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Header() {
   return (
-    <header className="fixed w-full shadow-2xl">
+    <header className=" w-full shadow-2xl">
       <nav className="bg-gray-300 border-b border-gray-500">
         <div className="max-w-screen-xl mx-auto px-6 py-4 flex flex-wrap justify-between items-center">
           {/* Logo + App Name */}
@@ -53,6 +53,12 @@ function Header() {
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-xl transition"
             >
               Get Started
+            </Link>
+            <Link
+              to="/test"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-xl transition"
+            >
+              Guest Mode
             </Link>
           </div>
         </div>

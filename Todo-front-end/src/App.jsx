@@ -1,13 +1,15 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback, useMemo, useContext } from "react";
 
 import { TaskList } from "./Components/TaskList";
 import { AddTaskForm } from "./Components/AddTaskForm";
 import { EditModal } from "./Components/EditModal";
 import { Filtering } from "./Components/Filtering";
 import "./App.css";
+import AuthContext from "./context/AuthContext";
 
 const BASE_URL = "http://localhost:4500";
 function App() {
+  const { mode, user } = useContext(AuthContext);
   const [tasks, setTasks] = useState([]);
   //For modal to edit task
   const [showModal, setShowModal] = useState(false);
@@ -19,11 +21,40 @@ function App() {
     setTasks(data);
   };
 
+  const [hasLoaded, setHasLoaded] = useState(false);
+
+  // Load on mode change
   useEffect(() => {
-    fetchTodos();
-  }, []);
+    if (mode === "guest") {
+      const local = localStorage.getItem("guestTodos");
+      try {
+        const parsed = local ? JSON.parse(local) : [];
+        setTasks(parsed);
+      } catch {
+        setTasks([]);
+      }
+    } else {
+      fetchTodos();
+    }
+    setHasLoaded(true); // ✅ mark that initial load is done
+  }, [mode]);
+
+  // Save only after first load
+  useEffect(() => {
+    if (mode === "guest" && hasLoaded) {
+      localStorage.setItem("guestTodos", JSON.stringify(tasks));
+    }
+  }, [tasks, mode, hasLoaded]);
 
   const onToggleComplete = useCallback((id) => {
+    if (mode === "guest") {
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === id ? { ...task, status: !task.status } : task
+        )
+      );
+      return;
+    }
     // Update UI immediately
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
@@ -35,16 +66,34 @@ function App() {
     fetch(`${BASE_URL}/todos/${id}`, { method: "PUT" }).catch(console.error);
   }, []);
 
-  const onDelete = useCallback(async (id) => {
-    await fetch(`${BASE_URL}/todos/${id}`, {
-      method: "DELETE",
-    });
+  const onDelete = useCallback(
+    async (id) => {
+      if (mode === "guest") {
+        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+        return;
+      }
+      await fetch(`${BASE_URL}/todos/${id}`, {
+        method: "DELETE",
+      });
 
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-  }, []);
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+    },
+    [mode]
+  );
 
   // Function called on Add Task
   const handleAddTask = async (input, priority, dueDate) => {
+    if (mode === "guest") {
+      const newTask = {
+        id: Date.now(),
+        title: input,
+        priority,
+        dueDate,
+        status: false,
+      };
+      setTasks((prev) => [...prev, newTask]);
+      return;
+    }
     try {
       const res = await fetch(`${BASE_URL}/todos`, {
         method: "POST",
@@ -63,6 +112,15 @@ function App() {
   };
 
   const onEdit = async (updatedTask) => {
+    if (mode === "guest") {
+      setTasks((prevTasks) => {
+        return prevTasks.map((task) =>
+          task.id === updatedTask.id ? updatedTask : task
+        );
+      });
+      setShowModal(false);
+      return;
+    }
     try {
       const res = await fetch(`${BASE_URL}/todos/${updatedTask.id}`, {
         method: "PUT",
@@ -126,8 +184,10 @@ function App() {
   }, [tasks, filters]);
 
   return (
-    <div className="min-h-screen bg-purple-300 flex flex-col items-center p-6">
-      <h1 className="text-4xl font-bold text-purple-800 mb-6">My Todo List</h1>
+    <div className="min-h-screen flex flex-col items-center p-6">
+      <h1 className="text-4xl font-bold text-purple-800 mb-6">
+        {mode === "guest" ? "GUEST" : { user }}
+      </h1>
       <div className={showModal ? "blur-sm pointer-events-none" : ""}>
         <AddTaskForm handleAddTask={handleAddTask}></AddTaskForm>
         <Filtering onFilterChange={onFilterChange}></Filtering>
