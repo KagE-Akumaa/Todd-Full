@@ -13,7 +13,6 @@ A modern, full-featured todo application built with React frontend and future ba
 - [Getting Started](#getting-started)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Project Structure](#project-structure)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
@@ -130,35 +129,6 @@ Make sure you have the following installed:
 3. Organize todos with categories and priorities
 4. Set due dates and receive reminders
 5. Share todos with other users (collaborative feature)
-
-## 📁 Project Structure
-
-```
-Todo-Full/
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── TodoList.jsx
-│   │   │   ├── TodoItem.jsx
-│   │   │   └── TodoForm.jsx
-│   │   ├── hooks/
-│   │   ├── utils/
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   ├── package.json
-│   └── vite.config.js
-├── backend/ (planned)
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   ├── middleware/
-│   ├── config/
-│   ├── server.js
-│   └── package.json
-├── README.md
-└── .gitignore
-```
 
 ## 🗺 Roadmap
 
