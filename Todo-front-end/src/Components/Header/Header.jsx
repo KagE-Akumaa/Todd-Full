@@ -50,12 +50,6 @@ function Header() {
           >
             Get Started
           </Link>
-          <Link
-            to="/test"
-            className="bg-gray-800 hover:bg-gray-900 text-white font-semibold px-4 py-2 rounded-xl transition shadow-sm"
-          >
-            Guest Mode
-          </Link>
         </div>
       </nav>
     </header>

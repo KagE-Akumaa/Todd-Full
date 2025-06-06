@@ -19,8 +19,7 @@ function GuestToLogin() {
             <span className="text-red-600 dark:text-red-400">Guest Mode</span>
           </h1>
           <p className="text-center text-lg mb-4">
-            Tasks will be lost on refresh. For persistent storage, please log
-            in.
+            Tasks will be not be saved. For persistent storage, please log in.
           </p>
           <button
             onClick={handleLoginClick}
