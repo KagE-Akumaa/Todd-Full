@@ -6,6 +6,7 @@ export const TaskItem = ({
   setTaskToEdit,
 }) => {
   const { title, priority, dueDate } = task;
+
   const setColor = (priority) => {
     if (priority === "low") return "text-green-400";
     else if (priority === "medium") return "text-yellow-400";
@@ -16,54 +17,58 @@ export const TaskItem = ({
     setShowModal(true);
     setTaskToEdit(task);
   };
+
   return (
-    <>
-      <div className="flex flex-col sm:flex-row sm:items-center bg-gray-500 p-4 rounded-md mb-3 shadow-md w-full max-w-[700px] hover:bg-gray-700">
-        {/* CheckBox */}
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm w-full transition hover:shadow-md">
+      {/* Left side: Checkbox + Title */}
+      <div className="flex items-start sm:items-center gap-3 flex-1">
         <input
           type="checkbox"
-          name="Status"
-          id=""
-          className="h-5 w-5 cursor-pointer accent-green-500"
+          className="h-5 w-5 mt-1 sm:mt-0 accent-green-500 cursor-pointer"
           checked={task.status}
           onChange={() => onToggleComplete(task.id)}
         />
-        {/* Task Description */}
-      
         <span
-          className={`flex-1 ml-0 sm:ml-4 mt-2 sm:mt-0 text-white text-lg break-words whitespace-normal ${
-            task.status ? "line-through" : ""
+          className={`text-lg text-gray-800 dark:text-white break-words flex-1 ${
+            task.status ? "line-through opacity-60" : ""
           }`}
         >
           {title}
         </span>
-        {/*Display priority here */}
-        <span className={`text-sm ${setColor(priority)} m-3 p-2`}>
+      </div>
+
+      {/* Right side: Metadata + Buttons */}
+      <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 sm:gap-4 text-sm">
+        {/* Priority */}
+        <span
+          className={`font-semibold ${setColor(
+            priority
+          )} px-2 py-1 rounded-md bg-opacity-10`}
+        >
           {priority.toUpperCase()}
         </span>
-        <span className="text-sm text-blue-300 mr-4">
+
+        {/* Due Date */}
+        <span className="text-blue-400 dark:text-blue-300">
           {new Date(dueDate).toLocaleDateString()}
         </span>
+
+        {/* Edit Button */}
         <button
-          type="button"
-          onClick={() => {
-            onEdit(task);
-          }}
-          className="bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded-lg ml-2"
+          onClick={() => onEdit(task)}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
         >
           Edit
         </button>
+
         {/* Delete Button */}
         <button
-          type="button"
-          onClick={() => {
-            onDelete(task.id);
-          }}
-          className="text-white m-4 p-2 border border-purple-600 rounded-2xl focus:ring-2 focus:ring-purple-400 cursor-pointer bg-red-500 hover:bg-red-700"
+          onClick={() => onDelete(task.id)}
+          className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition"
         >
           Delete
         </button>
       </div>
-    </>
+    </div>
   );
 };

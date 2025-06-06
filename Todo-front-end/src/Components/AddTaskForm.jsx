@@ -18,25 +18,26 @@ export const AddTaskForm = ({ handleAddTask }) => {
       onSubmit={onSubmit}
       id="task-input"
       name="task"
-      className="flex w-[700px] mb-6"
+      className="flex flex-wrap justify-between gap-4 bg-gray-50 dark:bg-gray-700 p-4 rounded-xl shadow-sm w-full transition-all duration-300"
     >
-      
+      {/* Task Input */}
       <input
         type="text"
         required
         value={input}
         placeholder="Enter the task"
-        className="flex-grow p-3 border m-4 border-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-400 text-black"
+        className="flex-grow min-w-[200px] flex-1 p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-800 dark:text-white"
         onChange={(e) => setInput(e.target.value)}
       />
-      {/* Priority */}
+
+      {/* Priority Dropdown */}
       <select
         id="priority-select"
         name="priority"
         value={priority}
-        className="text-black m-4 p-2 border border-purple-600 rounded focus:ring-2 focus:ring-purple-400 cursor-pointer"
-        onChange={(e) => setPriority(e.target.value)}
         required
+        className="min-w-[140px] p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+        onChange={(e) => setPriority(e.target.value)}
       >
         <option value="" disabled>
           Priority
@@ -45,19 +46,21 @@ export const AddTaskForm = ({ handleAddTask }) => {
         <option value="medium">Medium</option>
         <option value="high">High</option>
       </select>
+
+      {/* Due Date */}
       <input
         type="date"
         name="Task-date"
-        id=""
         value={dueDate}
         required
-        className="text-black m-4 p-2 border border-purple-600 rounded focus:ring-2 focus:ring-purple-400 cursor-pointer"
+        className="min-w-[140px] p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
         onChange={(e) => setDate(e.target.value)}
       />
 
+      {/* Submit Button */}
       <button
         type="submit"
-        className="text-black m-4 p-2 border border-purple-600 rounded-2xl focus:ring-2 focus:ring-purple-400 cursor-pointer bg-cyan-300 hover:bg-cyan-700"
+        className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-xl transition-all"
       >
         Add
       </button>

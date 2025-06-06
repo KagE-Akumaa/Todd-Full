@@ -4,62 +4,81 @@ export const EditModal = ({ task, onClose, onEdit }) => {
   const [title, setTitle] = useState(task.title);
   const [priority, setPriority] = useState(task.priority);
   const [dueDate, setDueDate] = useState(task.dueDate);
+
   const handleEditSubmit = (e) => {
     e.preventDefault();
     const updatedTasks = { ...task, title, priority, dueDate };
     onEdit(updatedTasks);
   };
+
   return (
     <form
-      className="flex flex-wrap justify-between gap-4 w-full max-w-3xl p-6 bg-purple-400 rounded-2xl shadow-lg shadow-purple-500"
       onSubmit={handleEditSubmit}
+      className="w-full max-w-3xl p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-xl flex flex-col gap-6 transition-all"
     >
-      <div className="flex flex-col">
-        <label className="text-white mb-1">Title</label>
-        <input
-          type="text"
-          value={title}
-          className="text-black p-2 w-60 border border-purple-600 rounded focus:ring-2 focus:ring-purple-400"
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </div>
+      <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
+        Edit Task
+      </h2>
 
-      <div className="flex flex-col">
-        <label className="text-white mb-1">Priority</label>
-        <select
-          value={priority}
-          className="text-black p-2 w-40 border border-purple-600 rounded focus:ring-2 focus:ring-purple-400"
-          onChange={(e) => setPriority(e.target.value)}
-        >
-          <option value="" disabled>
+      <div className="flex flex-wrap gap-6 justify-between">
+        {/* Title Input */}
+        <div className="flex flex-col w-full sm:w-[45%]">
+          <label className="text-gray-700 dark:text-gray-300 mb-1">Title</label>
+          <input
+            type="text"
+            value={title}
+            required
+            className="p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
+
+        {/* Priority Dropdown */}
+        <div className="flex flex-col w-full sm:w-[25%]">
+          <label className="text-gray-700 dark:text-gray-300 mb-1">
             Priority
-          </option>
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-        </select>
+          </label>
+          <select
+            value={priority}
+            required
+            className="p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+            onChange={(e) => setPriority(e.target.value)}
+          >
+            <option value="" disabled>
+              Priority
+            </option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+
+        {/* Due Date Input */}
+        <div className="flex flex-col w-full sm:w-[25%]">
+          <label className="text-gray-700 dark:text-gray-300 mb-1">
+            Due Date
+          </label>
+          <input
+            type="date"
+            value={dueDate}
+            required
+            className="p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+            onChange={(e) => setDueDate(e.target.value)}
+          />
+        </div>
       </div>
 
-      <div className="flex flex-col">
-        <label className="text-white mb-1">Due Date</label>
-        <input
-          type="date"
-          value={dueDate}
-          className="text-black p-2 w-40 border border-purple-600 rounded focus:ring-2 focus:ring-purple-400"
-          onChange={(e) => setDueDate(e.target.value)}
-        />
-      </div>
-
-      <div className="flex items-end gap-4 mt-4">
+      {/* Action Buttons */}
+      <div className="flex justify-end gap-4 pt-4">
         <button
           type="submit"
-          className="text-black p-2 border border-purple-600 rounded-2xl bg-cyan-300 hover:bg-cyan-700"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-xl transition"
         >
           Save
         </button>
         <button
           type="button"
-          className="text-black p-2 border border-purple-600 rounded-2xl bg-red-300 hover:bg-red-700"
+          className="bg-red-600 hover:bg-red-700 text-white font-semibold px-5 py-2 rounded-xl transition"
           onClick={onClose}
         >
           Close

@@ -6,6 +6,7 @@ import { EditModal } from "./Components/EditModal";
 import { Filtering } from "./Components/Filtering";
 import "./App.css";
 import AuthContext from "./context/AuthContext";
+import GuestToLogin from "./Components/GuestToLogin";
 
 const BASE_URL = "http://localhost:4500";
 function App() {
@@ -184,31 +185,38 @@ function App() {
   }, [tasks, filters]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-6">
-      <h1 className="text-4xl font-bold text-purple-800 mb-6">
-        {mode === "guest" ? "GUEST" : { user }}
-      </h1>
-      <div className={showModal ? "blur-sm pointer-events-none" : ""}>
-        <AddTaskForm handleAddTask={handleAddTask}></AddTaskForm>
-        <Filtering onFilterChange={onFilterChange}></Filtering>
-        <TaskList
-          tasks={FilteredTasks}
-          onToggleComplete={onToggleComplete}
-          onDelete={onDelete}
-          setShowModal={setShowModal}
-          setTaskToEdit={setTaskToEdit}
-        ></TaskList>
-      </div>
-      {showModal && taskToEdit && (
-        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-sm bg-black/40 z-10 transition-opacity duration-300 opacity-100">
-          <EditModal
-            task={taskToEdit}
-            onClose={() => setShowModal(false)}
-            onEdit={onEdit}
-          ></EditModal>
+    <>
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col items-center justify-start p-6 transition-colors duration-300">
+        <GuestToLogin />
+        {/* Todo App Main Card */}
+        <div
+          className={`w-full max-w-2xl bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md transition-all duration-300 ${
+            showModal ? "blur-sm pointer-events-none" : ""
+          }`}
+        >
+          <AddTaskForm handleAddTask={handleAddTask} />
+          <Filtering onFilterChange={onFilterChange} />
+          <TaskList
+            tasks={FilteredTasks}
+            onToggleComplete={onToggleComplete}
+            onDelete={onDelete}
+            setShowModal={setShowModal}
+            setTaskToEdit={setTaskToEdit}
+          />
         </div>
-      )}
-    </div>
+
+        {/* Modal Overlay */}
+        {showModal && taskToEdit && (
+          <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-sm bg-black/40 z-10 transition-opacity duration-300">
+            <EditModal
+              task={taskToEdit}
+              onClose={() => setShowModal(false)}
+              onEdit={onEdit}
+            />
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 export default App;
